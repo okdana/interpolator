@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Note: Some versions of PHPUnit ignore your colour settings... -->
+<phpunit
+	bootstrap="vendor/autoload.php"
+	colors="false"
+	verbose="true"
+	convertErrorsToExceptions="true"
+	stopOnFailure="false"
+>
+	<!-- Output settings -->
+	<logging>
+		<!-- Output code coverage information -->
+		<log type="coverage-text" target="php://stdout" showUncoveredFiles="false" />
+	</logging>
+
+	<!-- Code-coverage filter -->
+	<filter>
+		<whitelist>
+			<directory suffix=".php">src</directory>
+		</whitelist>
+	</filter>
+
+	<!-- Test suite -->
+	<testsuites>
+		<testsuite name="\Dana\Interpolator test suite">
+			<directory suffix="Test.php">tests</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>
+
