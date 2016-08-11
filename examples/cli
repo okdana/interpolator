@@ -1,0 +1,70 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * This file is part of Dana\Interpolator.
+ *
+ * @author  dana geier <dana@dana.is>
+ * @license MIT
+ */
+
+require_once __DIR__ . '/../src/Interpolator.php';
+
+use Dana\Interpolator\Interpolator;
+
+if ( $argc < 4 ) {
+	fprintf(
+		\STDERR,
+		"usage: %s <options> <fixtures> <string> ...\n",
+		basename($argv[0])
+	);
+	fprintf(\STDERR, "\n");
+	fprintf(
+		\STDERR,
+		"%-8s  %s\n",
+		'options',
+		'JSON-encoded dictionary of instance options'
+	);
+	fprintf(
+		\STDERR,
+		"%-8s  %s\n",
+		'fixtures',
+		'JSON-encoded array or dictionary of fixtures'
+	);
+	fprintf(
+		\STDERR,
+		"%-8s  %s\n",
+		'string',
+		'One or more strings to interpolate'
+	);
+	exit(1);
+}
+
+try {
+	$options      = trim($argv[1]) === '' ? [] : json_decode($argv[1], true);
+	$fixtures     = trim($argv[2]) === '' ? [] : json_decode($argv[2], true);
+	$interpolator = new Interpolator($options);
+
+	foreach ( array_slice($argv, 3) as $string ) {
+		fprintf(
+			\STDOUT,
+			"%s -> %s\n",
+			$string,
+			rtrim($interpolator->render($string, $fixtures), "\r\n")
+		);
+	}
+
+} catch ( \Exception $e ) {
+	fprintf(
+		\STDERR,
+		"%s: %s (%s:%d)\n",
+		get_class($e),
+		$e->getMessage(),
+		basename($e->getFile()),
+		$e->getLine()
+	);
+	exit(1);
+}
+
+exit(0);
+
