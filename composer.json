@@ -1,16 +1,16 @@
 {
 	"name":        "dana/interpolator",
-	"description": "Simple string interpolation with a Ruby-style syntax",
+	"description": "Simple string templating",
 	"homepage":    "https://github.com/okdana/interpolator",
 	"keywords":    ["interpolate", "interpolated", "template", "render"],
 	"license":     "MIT",
 
 	"require": {
-		"php": ">=5.5.0"
+		"php": ">=7.0.0"
 	},
 
 	"require-dev": {
-		"phpunit/phpunit": "^5.5"
+		"phpunit/phpunit": "^6.2"
 	},
 
 	"autoload": {
@@ -23,7 +23,8 @@
 	},
 
 	"scripts": {
-		"cli": "examples/cli"
+		"cli":  "examples/cli",
+		"test": "vendor/bin/phpunit"
 	}
 }
 
