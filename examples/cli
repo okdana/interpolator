@@ -4,7 +4,7 @@
 /**
  * This file is part of Dana\Interpolator.
  *
- * @author  dana geier <dana@dana.is>
+ * @author  dana <dana@dana.is>
  * @license MIT
  */
 
@@ -12,19 +12,13 @@ require_once __DIR__ . '/../src/Interpolator.php';
 
 use Dana\Interpolator\Interpolator;
 
-if ( $argc < 4 ) {
+if ( $argc < 3 ) {
 	fprintf(
 		\STDERR,
-		"usage: %s <options> <fixtures> <string> ...\n",
+		"usage: %s <fixtures> <string> ...\n",
 		basename($argv[0])
 	);
 	fprintf(\STDERR, "\n");
-	fprintf(
-		\STDERR,
-		"%-8s  %s\n",
-		'options',
-		'JSON-encoded dictionary of instance options'
-	);
 	fprintf(
 		\STDERR,
 		"%-8s  %s\n",
@@ -37,15 +31,19 @@ if ( $argc < 4 ) {
 		'string',
 		'One or more strings to interpolate'
 	);
+	fprintf(
+		\STDERR,
+		"\nexample: %s '[\"world\"]' 'Hello, %%{0}!' 'Goodbye, %%{0|u}!'\n",
+		basename($argv[0])
+	);
 	exit(1);
 }
 
 try {
-	$options      = trim($argv[1]) === '' ? [] : json_decode($argv[1], true);
-	$fixtures     = trim($argv[2]) === '' ? [] : json_decode($argv[2], true);
-	$interpolator = new Interpolator($options);
+	$fixtures     = trim($argv[1]) === '' ? [] : json_decode($argv[1], true);
+	$interpolator = new Interpolator();
 
-	foreach ( array_slice($argv, 3) as $string ) {
+	foreach ( array_slice($argv, 2) as $string ) {
 		fprintf(
 			\STDOUT,
 			"%s -> %s\n",
@@ -53,7 +51,6 @@ try {
 			rtrim($interpolator->render($string, $fixtures), "\r\n")
 		);
 	}
-
 } catch ( \Exception $e ) {
 	fprintf(
 		\STDERR,
